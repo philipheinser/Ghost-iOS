@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "ghost-ios",
+    "description": "App for the ghost blogging software.",
+    "slug": "ghost-ios",
+    "privacy": "unlisted",
+    "sdkVersion": "25.0.0",
+    "version": "1.0.0",
+    "orientation": "default",
+    "primaryColor": "#cccccc",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
