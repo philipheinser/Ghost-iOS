@@ -4,7 +4,7 @@
     "description": "App for the ghost blogging software.",
     "slug": "ghost-ios",
     "privacy": "unlisted",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "27.0.0",
     "version": "1.0.0",
     "orientation": "default",
     "primaryColor": "#cccccc",
