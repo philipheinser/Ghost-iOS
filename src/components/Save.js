@@ -10,9 +10,7 @@ import { GhostBlue, MidGrey } from '../Colors';
 @observer
 export default class Avatar extends React.Component<{ post: Post }> {
   render() {
-    const post: Post = this.props.store.postStore.posts.find(
-      post => post.id === this.props.post.id
-    );
+    const post: Post = this.props.post;
 
     let buttonTitle = '';
 
