@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ghost-ios",
+    "name": "Publication",
     "description": "App for the ghost blogging software.",
-    "slug": "ghost-ios",
+    "slug": "publication",
     "privacy": "unlisted",
     "sdkVersion": "27.0.0",
     "version": "1.0.0",
@@ -15,7 +15,12 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.philipheinser.ghost",
+      "buildNumber": "2",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     }
   }
 }
