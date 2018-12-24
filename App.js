@@ -1,8 +1,14 @@
 import React from 'react';
 import { AsyncStorage } from 'react-native';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import {
+  createBottomTabNavigator,
+  createStackNavigator,
+  createAppContainer,
+  createSwitchNavigator,
+} from 'react-navigation';
 import { Provider, observer } from 'mobx-react/native';
 import { create, persist } from 'mobx-persist';
+import { Ionicons } from '@expo/vector-icons';
 
 import { GhostBlue } from './src/Colors';
 import store from './src/Store';
@@ -16,19 +22,46 @@ import ShortcutsScreen from './src/screens/ShortcutsScreen';
 import UnsplashScreen from './src/screens/UnsplashScreen';
 import MarkdownHelpScreen from './src/screens/MarkdownHelpScreen';
 
-const TabsNavigator = TabNavigator(
+const TabsNavigator = createBottomTabNavigator(
   {
     PostList: {
       screen: PostsScreen,
     },
-    Settings: {
-      screen: SettingsScreen,
-    },
+
+    Settings: { screen: SettingsScreen },
   },
   {
     tabBarOptions: {
       activeTintColor: GhostBlue,
     },
+    navigationOptions: ({ navigation }) => {
+      const component = TabsNavigator.router.getComponentForState(
+        navigation.state
+      );
+      if (typeof component.navigationOptions === 'function') {
+        return component.navigationOptions({ navigation });
+      }
+      return component.navigationOptions;
+    },
+    defaultNavigationOptions: ({ navigation, navigationOptions }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        console.log(navigationOptions);
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === 'PostList') {
+          iconName = 'ios-paper';
+        } else if (routeName === 'Settings') {
+          iconName = 'ios-settings';
+        }
+        return (
+          <Ionicons
+            name={iconName}
+            size={horizontal ? 20 : 25}
+            color={tintColor}
+          />
+        );
+      },
+    }),
   }
 );
 
@@ -59,37 +92,43 @@ export default class App extends React.Component {
       return null;
     }
 
-    const RootNavigator = StackNavigator(
-      {
-        Tabs: {
-          screen: TabsNavigator,
-        },
-        URL: {
-          screen: URLScreen,
-        },
-        Login: {
-          screen: LoginScreen,
-        },
-        Editor: {
-          screen: EditorScreen,
-        },
-        Shortcuts: {
-          screen: ShortcutsScreen,
-        },
-        Unsplash: {
-          screen: UnsplashScreen,
-        },
-        MarkdownHelp: { screen: MarkdownHelpScreen },
-      },
-      {
-        initialRouteName: this.state.info ? 'Tabs' : 'URL',
-        navigationOptions: {
-          headerTintColor: GhostBlue,
-          headerStyle: {
-            backgroundColor: '#f4f8fb',
+    const RootNavigator = createAppContainer(
+      createSwitchNavigator(
+        {
+          Home: {
+            screen: createStackNavigator({
+              Tabs: {
+                screen: TabsNavigator,
+              },
+              Shortcuts: {
+                screen: ShortcutsScreen,
+              },
+              Editor: {
+                screen: EditorScreen,
+              },
+              Unsplash: {
+                screen: UnsplashScreen,
+              },
+              MarkdownHelp: { screen: MarkdownHelpScreen },
+            }),
+          },
+          URL: {
+            screen: URLScreen,
+          },
+          Login: {
+            screen: LoginScreen,
           },
         },
-      }
+        {
+          initialRouteName: this.state.info ? 'Home' : 'URL',
+          defaultNavigationOptions: {
+            headerTintColor: GhostBlue,
+            headerStyle: {
+              backgroundColor: '#f4f8fb',
+            },
+          },
+        }
+      )
     );
 
     return (

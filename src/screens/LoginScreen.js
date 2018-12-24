@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { getClientInformation, login } from '../Auth';
 import { LightGrey, DarkGrey, White, MidGrey, Red, GhostBlue } from '../Colors';
 
@@ -82,13 +82,7 @@ class LoginScreen extends React.Component {
                     })
                   )
                     .then(() => {
-                      const resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                          NavigationActions.navigate({ routeName: 'Tabs' }),
-                        ],
-                      });
-                      this.props.navigation.dispatch(resetAction);
+                      this.props.navigation.navigate('Home');
                     })
                     .catch(err => console.log(err));
                 } else {

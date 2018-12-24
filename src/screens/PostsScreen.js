@@ -40,13 +40,6 @@ import Filter from '../components/Filter';
 class PostList extends React.Component<{ store: Store }> {
   static navigationOptions = ({ navigation }) => ({
     title: 'Your stories',
-    tabBarIcon: ({ tintColor, focused }) => (
-      <Ionicons
-        name={focused ? 'ios-paper' : 'ios-paper-outline'}
-        size={32}
-        color={tintColor}
-      />
-    ),
     headerRight: (
       <TouchableOpacity
         onPress={() => {

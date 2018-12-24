@@ -47,9 +47,22 @@ class EditorScreen extends React.Component {
     super(props);
 
     const { params } = props.navigation.state;
-    const markdown = params.mobiledoc
-      ? JSON.parse(params.mobiledoc).cards[0][1].markdown
-      : '';
+    let markdown = '';
+    if (params.mobiledoc) {
+      try {
+        const mobiledoc = JSON.parse(params.mobiledoc);
+        console.log(mobiledoc);
+        if (mobiledoc.sections[0][0] === 10 && mobiledoc.cards[0][1].markdown) {
+          markdown = mobiledoc.cards[0][1].markdown;
+        } else {
+          throw new Error('OnlyMarkdownCardAllowed');
+        }
+      } catch (error) {
+        console.log(error);
+        markdown =
+          'The app can only open posts containing a single Markdown card';
+      }
+    }
 
     this.state = {
       text: markdown,
@@ -90,7 +103,10 @@ class EditorScreen extends React.Component {
   }
 
   performShortcut = async shortcut => {
-    const { text, selection: { start, end } } = this.state;
+    const {
+      text,
+      selection: { start, end },
+    } = this.state;
     if (shortcut.type === 'annotateWords') {
       const mid = text.substring(start, end);
       const newCourser = mid.length ? end : end - shortcut.suffix.length;
@@ -272,6 +288,7 @@ class EditorScreen extends React.Component {
           {(this.state.showPreview ||
             this.props.store.uiStore.orientation !== 'PORTRAIT') && (
             <WebView
+              useWebKit={true}
               onMessage={this.onMessage}
               source={{
                 html: preview.replace('$$title', this.state.title).replace(

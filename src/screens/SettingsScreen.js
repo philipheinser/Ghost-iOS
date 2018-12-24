@@ -17,7 +17,7 @@ import {
 import { Constants, Util, LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { observer, inject } from 'mobx-react/native';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 import Avatar from '../components/Avatar';
 import { LightGrey, DarkGrey, MidGrey, GhostBlue } from '../Colors';
@@ -27,13 +27,6 @@ import { LightGrey, DarkGrey, MidGrey, GhostBlue } from '../Colors';
 class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
-    tabBarIcon: ({ tintColor, focused }) => (
-      <Ionicons
-        name={focused ? 'ios-settings' : 'ios-settings-outline'}
-        size={32}
-        color={tintColor}
-      />
-    ),
   };
 
   constructor(props) {
@@ -209,11 +202,7 @@ class SettingsScreen extends React.Component {
                 title="Logout"
                 color={GhostBlue}
                 onPress={() => {
-                  const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: 'URL' })],
-                  });
-                  this.props.navigation.dispatch(resetAction);
+                  this.props.navigation.navigate('URL');
                   AsyncStorage.removeItem('userInfo');
                   this.props.store.postStore.clearPosts();
                 }}
